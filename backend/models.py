@@ -45,7 +45,7 @@ class UserRepository(AbstractRepository[User]):
 
 
 def get_db():
-    client = MongoClient("mongodb://localhost:27017")
+    client = MongoClient("mongodb://database:27017")
     database = client["habit_tracker"]
     return database
 

@@ -5,13 +5,8 @@ import axios from "axios";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-const { DateTime, Duration, Interval} = require("luxon");
+const { DateTime, Duration} = require("luxon");
 
-// import {MongoClient} from "mongodb"
-// const uri = "mongodb://localhost:27017";
-// const client = new MongoClient(uri);
-
-const host = "http://192.168.1.224";
 
 interface Completion {
   timestamp: Date;
@@ -21,8 +16,6 @@ interface Habit {
   name: string;
   description: string;
   completions: Completion[];
-  // imageUrl: string
-  // imageSize: 90,
 }
 
 interface User {
@@ -30,12 +23,14 @@ interface User {
   habits: Habit[];
 }
 
+const host = "/api";
+
 function HabitList(props: { username: string }) {
   const [habits, setHabits] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${host}:8000/users/${props.username}`)
+      .get(`${host}/users/${props.username}`)
       .then((response) => {
         setHabits(response.data["habits"]);
       })
@@ -63,15 +58,6 @@ function HabitList(props: { username: string }) {
 function HabitView(props: { habit: Habit; username: string }) {
   return (
     <div className="card">
-      {/* <img
-        src={props.habit.imageUrl}
-        alt={props.habit.name}
-        style={{
-          width: props.habit.imageSize,
-          height: props.habit.imageSize
-        }}
-        className="card-img-top m-3"
-      /> */}
       <div className="card-body" style={{ width: "18rem" }}>
         <h5 className="card-title">{props.habit.name}</h5>
         <p className="card-text">{props.habit.description}</p>
@@ -139,10 +125,6 @@ function LastDays(props: { habit: Habit }) {
       ))}
     </div>
   );
-
-  // const completions = props.habit.completions.filter((completion) => {
-  //   today - completion.timestamp <= loockback_days;
-  // })
 }
 
 
@@ -151,7 +133,7 @@ function CompleteButton(props: { habit: Habit; username: string }) {
   function handleClick() {
     axios
       .post(
-        `${host}:8000/users/${props.username}/habits/${props.habit.name}/complete`
+        `${host}/users/${props.username}/habits/${props.habit.name}/complete`
       )
       .then((response) => {
         console.log(response.data);
@@ -184,7 +166,7 @@ function NewHabit(props: { username: string }) {
     console.log(formJson);
 
     axios
-      .put(`${host}:8000/users/${props.username}/habits/${formJson["name"]}`)
+      .put(`${host}/users/${props.username}/habits/${formJson["name"]}`)
       .then((response) => {
         console.log(response.data);
       })

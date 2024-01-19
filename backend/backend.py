@@ -5,13 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from models import User, Habit, Completion, UserRepository, get_db
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 
 origins = [
-    "http://localhost",
-    "http://localhost:3001",
-    "http://192.168.1.224:3001",
+    "http://frontend",
+    "http://frontend:3000",
 ]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

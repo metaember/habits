@@ -1,28 +1,34 @@
 services:
-  habit-frontend:
+  frontend:
     image: node:21-alpine3.18
     build:
       context: ./frontend
     depends_on:
-      - habit-database
+      - database
     ports:
       - 3000:3000
       - 35729:35729
 
-  habit-backend:
+  backend:
     build:
       context: ./backend
     depends_on:
-      - habit-database
+      - database
     ports:
       - 8000:8000
 
-  habit-database:
+  database:
     image: mongo:6
     volumes:
-      - database:/data/db
+      - db:/data/db
     ports:
       - 27017:27017
+  proxy:
+    build: ./proxy
+    ports: ['8001:80']
+    depends_on:
+      - database
+      - frontend
 
 volumes:
-  database:
+  db:
