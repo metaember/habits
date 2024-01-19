@@ -1,28 +1,28 @@
 services:
-  frontend:
+  habits-frontend:
     image: node:21-alpine3.18
     build:
       context: ./frontend
     depends_on:
-      - database
+      - habits-database
 
-  backend:
+  habits-backend:
     build:
       context: ./backend
     depends_on:
-      - database
+      - habits-database
 
-  database:
+  habits-database:
     image: mongo:6
     volumes:
       - db:/data/db
 
-  proxy:
+  habits-proxy:
     build: ./proxy
     ports: ['8001:80']
     depends_on:
-      - database
-      - frontend
+      - habits-database
+      - habits-frontend
 
 volumes:
   db:
