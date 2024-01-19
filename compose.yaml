@@ -5,24 +5,18 @@ services:
       context: ./frontend
     depends_on:
       - database
-    ports:
-      - 3000:3000
-      - 35729:35729
 
   backend:
     build:
       context: ./backend
     depends_on:
       - database
-    ports:
-      - 8000:8000
 
   database:
     image: mongo:6
     volumes:
       - db:/data/db
-    ports:
-      - 27017:27017
+
   proxy:
     build: ./proxy
     ports: ['8001:80']
